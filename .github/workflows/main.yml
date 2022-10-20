@@ -1,0 +1,290 @@
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2022.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+name: Nature PySCF Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - 'stable/**'
+  pull_request:
+    branches:
+      - main
+      - 'stable/**'
+  schedule:
+    # run every day at 1AM
+    - cron: '0 1 * * *'
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.ref }}-${{ github.head_ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  Checks:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7]
+    steps:
+      - name: Print Concurrency Group
+        env:
+          CONCURRENCY_GROUP: ${{ github.repository }}-${{ github.ref }}-${{ github.head_ref }}-${{ github.workflow }}
+        run: |
+          echo -e "\033[31;1;4mConcurrency Group\033[0m"
+          echo -e "$CONCURRENCY_GROUP\n"
+        shell: bash
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - uses: ./.github/actions/install-main-dependencies
+        with:
+          os: ${{ matrix.os }}
+          python-version: ${{ matrix.python-version }}
+        if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
+      - uses: ./.github/actions/install-nature-pyscf
+        with:
+          os: ${{ matrix.os }}
+      - name: Install Dependencies
+        run: |
+          pip install jupyter sphinx_rtd_theme qiskit-terra[visualization]
+          sudo apt-get -y install pandoc graphviz
+          sudo apt-get -y install python3-enchant
+          sudo apt-get -y install hunspell-en-us
+          pip install pyenchant
+        shell: bash
+      - run:  pip check
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Copyright Check
+        run: |
+          python tools/check_copyright.py -check
+        if: ${{ !cancelled() }}
+        shell: bash
+      - run:  make spell
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Style Check
+        run: |
+          make clean_sphinx
+          make style
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Run make html
+        run:  |
+          make clean_sphinx
+          make html
+          cd docs/_build/html
+          mkdir artifacts
+          tar -zcvf artifacts/documentation.tar.gz --exclude=./artifacts .
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Run upload documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: docs/_build/html/artifacts/documentation.tar.gz
+        if: ${{ !cancelled() }}
+      - run:  make doctest
+        if: ${{ !cancelled() }}
+        shell: bash
+  Nature_PySCF:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7, 3.8, 3.9, '3.10']
+        include:
+          - os: macos-latest
+            python-version: 3.8
+          - os: macos-latest
+            python-version: '3.10'
+          - os: windows-2019
+            python-version: 3.8
+          - os: windows-2019
+            python-version: '3.10'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - uses: ./.github/actions/install-main-dependencies
+        with:
+          os: ${{ matrix.os }}
+          python-version: ${{ matrix.python-version }}
+        if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
+      - uses: ./.github/actions/install-nature-pyscf
+        with:
+          os: ${{ matrix.os }}
+      - name: Run lint
+        run: |
+          make lint
+        shell: bash
+      - name: Run mypy
+        run: |
+          make mypy
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Run lint latest version
+        run: |
+          pip install -U -r requirements-dev.txt
+          make lint
+        shell: bash
+      - name: Stestr Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .stestr
+          key: stestr-${{ matrix.os }}-${{ matrix.python-version }}-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
+          restore-keys: |
+            stestr-${{ matrix.os }}-${{ matrix.python-version }}-
+            stestr-${{ matrix.os }}-
+        if: ${{ !cancelled() }}
+      - name: Nature PySCF Unit Tests under Python ${{ matrix.python-version }}
+        uses: ./.github/actions/run-tests
+        with:
+          os: ${{ matrix.os }}
+          event-name: ${{ github.event_name }}
+          run-slow: ${{ contains(github.event.pull_request.labels.*.name, 'run_slow') }}
+          python-version: ${{ matrix.python-version }}
+        if: ${{ !cancelled() }}
+      - name: Deprecation Messages
+        run: |
+          mkdir ./ci-artifact-data
+          python tools/extract_deprecation.py -file out.txt -output ./ci-artifact-data/fin.dep
+        shell: bash
+      - name: Coverage combine
+        run: |
+          coverage3 combine
+          mv .coverage ./ci-artifact-data/fin.dat
+        if: ${{ matrix.python-version == 3.7 }}
+        shell: bash
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-${{ matrix.python-version }}
+          path: ./ci-artifact-data/*
+  Tutorials:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - uses: ./.github/actions/install-main-dependencies
+        with:
+          os: ${{ matrix.os }}
+          python-version: ${{ matrix.python-version }}
+        if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
+      - uses: ./.github/actions/install-nature-pyscf
+        with:
+          os: ${{ matrix.os }}
+      - name: Install Dependencies
+        run: |
+          pip install jupyter sphinx_rtd_theme qiskit-terra[visualization]
+          sudo apt-get install -y pandoc graphviz
+        shell: bash
+      - name: Run Nature PySCF Tutorials
+        env:
+          QISKIT_PARALLEL: False
+          QISKIT_DOCS_BUILD_TUTORIALS: 'always'
+        run: |
+          make html
+          cd docs/_build/html
+          mkdir artifacts
+          tar -zcvf artifacts/tutorials.tar.gz --exclude=./artifacts .
+        shell: bash
+      - name: Run upload tutorials
+        uses: actions/upload-artifact@v3
+        with:
+          name: tutorials${{ matrix.python-version }}
+          path: docs/_build/html/artifacts/tutorials.tar.gz
+  Deprecation_Messages_and_Coverage:
+    needs: [Checks, Nature_PySCF, Tutorials]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v3
+        with:
+          name: ubuntu-latest-3.7
+          path: /tmp/f37
+      - uses: actions/download-artifact@v3
+        with:
+          name: ubuntu-latest-3.8
+          path: /tmp/f38
+      - uses: actions/download-artifact@v3
+        with:
+          name: ubuntu-latest-3.9
+          path: /tmp/f39
+      - uses: actions/download-artifact@v3
+        with:
+          name: ubuntu-latest-3.10
+          path: /tmp/f310
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-latest-3.8
+          path: /tmp/m38
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-latest-3.10
+          path: /tmp/m310
+      - uses: actions/download-artifact@v3
+        with:
+          name: windows-2019-3.8
+          path: /tmp/w38
+      - uses: actions/download-artifact@v3
+        with:
+          name: windows-2019-3.10
+          path: /tmp/w310
+      - name: Install Dependencies
+        run: pip install -U coverage coveralls diff-cover
+        shell: bash
+      - name: Combined Deprecation Messages
+        run: |
+          sort -f -u /tmp/f37/fin.dep /tmp/f38/fin.dep /tmp/f39/fin.dep /tmp/f310/fin.dep /tmp/m38/fin.dep /tmp/m310/fin.dep /tmp/w38/fin.dep /tmp/w310/fin.dep || true
+        shell: bash
+      - name: Coverage combine
+        run: coverage3 combine /tmp/f37/fin.dat
+        shell: bash
+      - name: Upload to Coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: coveralls --service=github
+        shell: bash
