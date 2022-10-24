@@ -19,4 +19,48 @@ If you want to work on the very latest work-in-progress versions, either to try 
 their official release or if you want to contribute to Qiskit Nature PySCF, then you can install from source.
 
 
+## Usage
 
+This plugin couples the APIs of PySCF and Qiskit Nature, enabling a user of PySCF to leverage
+Quantum-based algorithms implemented in Qiskit to be used in-place of their classical counterparts.
+
+### Active Space Calculations
+
+One very common approach is to use a Quantum algorithm to find the ground state in an active space
+calculation. To this extent, this plugin provides the `QiskitSolver` class, which you can inject
+directly into your `CASCI` or `CASSCF` simulation objects of PySCF.
+
+Below we show a simple example of how to do this.
+
+```python
+from pyscf import gto, scf, mcscf
+
+from qiskit.algorithms.optimizers import SLSQP
+from qiskit.primitives import Estimator
+from qiskit_nature.second_q.algorithms import GroundStateEigensolver, VQEUCCFactory
+from qiskit_nature.second_q.circuit.library import UCCSD
+from qiskit_nature.second_q.mappers import ParityMapper, QubitConverter
+
+from qiskit_nature_pyscf import QiskitSolver
+
+mol = gto.M(atom="Li 0 0 0; H 0 0 1.6", basis="sto-3g")
+
+h_f = scf.RHF(mol).run()
+
+norb, nelec = 2, 2
+
+cas = mcscf.CASCI(h_f, norb, nelec)
+
+converter = QubitConverter(ParityMapper(), two_qubit_reduction=True)
+
+vqe = VQEUCCFactory(Estimator(), UCCSD(), SLSQP())
+
+algorithm = GroundStateEigensolver(converter, vqe)
+
+cas.fcisolver = QiskitSolver(algorithm)
+
+cas.run()
+```
+
+For more detailed explanations we recommend to check out the documentation of
+[PySCF](https://pyscf.org/) and [Qiskit Nature](https://qiskit.org/documentation/nature/).

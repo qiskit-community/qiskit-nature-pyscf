@@ -16,8 +16,17 @@ Qiskit's Nature PySCF module (:mod:`qiskit_nature_pyscf`)
 
 .. currentmodule:: qiskit_nature_pyscf
 
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   QiskitSolver
 """
 
+from .qiskit_solver import QiskitSolver
 from .version import __version__
 
-__all__ = ["__version__"]
+__all__ = [
+    "QiskitSolver",
+    "__version__",
+]
