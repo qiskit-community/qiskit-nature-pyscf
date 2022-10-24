@@ -41,7 +41,7 @@ all_check: spell style lint copyright mypy clean_sphinx html doctest
 
 lint:
 	pylint -rn qiskit_nature_pyscf test tools
-	python tools/verify_headers.py qiskit_finance test tools
+	python tools/verify_headers.py qiskit_nature_pyscf test tools
 	python tools/find_stray_release_notes.py
 
 mypy:
@@ -61,7 +61,7 @@ test_ci:
 	stestr run --concurrency $(CONCURRENCY)
 
 spell:
-	pylint -rn --disable=all --enable=spelling --spelling-dict=en_US --spelling-private-dict-file=.pylintdict qiskit_finance test tools
+	pylint -rn --disable=all --enable=spelling --spelling-dict=en_US --spelling-private-dict-file=.pylintdict qiskit_nature_pyscf test tools
 	sphinx-build -M spelling docs docs/_build -W -T --keep-going $(SPHINXOPTS)
 
 copyright:
@@ -75,7 +75,7 @@ doctest:
 
 clean_sphinx:
 	make -C docs clean
-	
+
 coverage:
 	coverage3 run --source qiskit_nature_pyscf -m unittest discover -s test -q
 	coverage3 report
@@ -83,4 +83,4 @@ coverage:
 coverage_erase:
 	coverage erase
 
-clean: clean_sphinx coverage_erase; 
+clean: clean_sphinx coverage_erase;

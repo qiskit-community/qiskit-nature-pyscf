@@ -41,7 +41,7 @@ with open(README_PATH) as readme_file:
 setuptools.setup(
     name='qiskit-nature-pyscf',
     version=VERSION,
-    description='Qiskit Nature PySCF: Third-party plugin of Qiskit Nature + PySCF.',
+    description='Qiskit Nature PySCF: Third-party integration plugin of Qiskit Nature + PySCF.',
     long_description=README,
     long_description_content_type="text/markdown",
     url='https://github.com/qiskit-community/qiskit-nature-pyscf',

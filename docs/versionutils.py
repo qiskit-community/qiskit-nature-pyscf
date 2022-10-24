@@ -35,7 +35,7 @@ default_language = "en"
 
 def setup(app):
     app.connect("config-inited", _extend_html_context)
-    app.add_config_value("content_prefix", "documentation/finance", "")
+    app.add_config_value("content_prefix", "documentation/qiskit-nature-pyscf", "")
     app.add_config_value("translations", True, "html")
 
 

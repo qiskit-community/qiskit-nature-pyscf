@@ -2,6 +2,7 @@ args
 bool
 currentmodule
 dicts
+filename
 formatter
 makefile
 pxd
@@ -9,6 +10,7 @@ py
 qiskit
 qiskit's
 readme
+reinstall
 scipy
 stdout
 str

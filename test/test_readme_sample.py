@@ -11,7 +11,7 @@
 # that they have been altered from the originals.
 
 """
-Code inside the test is the finance sample from the readme.
+Code inside the test is the Qiskit Nature PySCF sample from the readme.
 If this test fails and code changes are needed here to resolve
 the issue then ensure changes are made to readme too.
 """
