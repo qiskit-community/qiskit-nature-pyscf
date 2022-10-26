@@ -50,7 +50,7 @@ os.environ["QISKIT_DOCS"] = "TRUE"
 
 # -- Project information -----------------------------------------------------
 project = "Qiskit Nature PySCF"
-copyright = f"2018, {date.today().year}, Qiskit Finance Development Team"  # pylint: disable=redefined-builtin
+copyright = f"{date.today().year}, Qiskit Nature PySCF Development Team"  # pylint: disable=redefined-builtin
 author = "Qiskit Nature PySCF Development Team"
 
 # The short X.Y version

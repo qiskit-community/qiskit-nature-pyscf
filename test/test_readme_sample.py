@@ -52,6 +52,7 @@ class TestReadmeSample(QiskitNaturePySCFTestCase):
                 readme_sample = match_sample.group(0)[9:-3]
 
         if readme_sample is None:
+            self.skipTest(f"No sample found inside {readme_name}.")
             return
 
         with contextlib.redirect_stdout(io.StringIO()) as out:
@@ -62,8 +63,8 @@ class TestReadmeSample(QiskitNaturePySCFTestCase):
                 return
 
         texts = out.getvalue().split("\n")
-        # add checks here
-        del texts
+        energy = float(texts[0][len("converged SCF energy = "):])
+        self.assertAlmostEqual(energy, -7.86186476980865, places=6)
 
 
 if __name__ == "__main__":

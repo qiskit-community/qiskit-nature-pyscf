@@ -127,9 +127,7 @@ runs:
           echo 'Create wheel file from main'
           pip install -U wheel
           pushd /tmp/qiskit-aer
-          if [ "${{ inputs.os }}" == "windows-2019" ]; then
-            python setup.py bdist_wheel -- -G 'Visual Studio 16 2019'
-          elif  [ "${{ inputs.os }}" == "macos-latest" ]; then
+          if  [ "${{ inputs.os }}" == "macos-latest" ]; then
             pip install -U -c constraints.txt -r requirements-dev.txt
             python setup.py bdist_wheel --plat-name macosx-10.16-x86_64
           else
