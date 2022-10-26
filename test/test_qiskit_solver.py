@@ -93,8 +93,8 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
 
         self.assertAlmostEqual(qcas.e_tot, cas_ref.e_tot)
 
-    def test_uhf_ucasscf_h2_mc2step(self):
-        """Test the UHF and UCASSCF mc2step-method on H2."""
+    def test_uhf_ucasscf_h2(self):
+        """Test the UHF and UCASSCF method on H2."""
         mol = gto.M(atom="H 0 0 0; H 0 0 0.735", basis="631g*")
 
         h_f = scf.UHF(mol).run()
@@ -112,6 +112,6 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
 
         qcas.fcisolver = QiskitSolver(ground_state_solver)
 
-        qcas.mc2step()
+        qcas.run()
 
         self.assertAlmostEqual(qcas.e_tot, cas_ref.e_tot)

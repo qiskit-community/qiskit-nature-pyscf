@@ -173,6 +173,8 @@ class QiskitSolver:
         e_tot = self.result.total_energies[0]
         return e_tot, self
 
+    approx_kernel = kernel
+
     def make_rdm1(
         self, fake_ci_vec: QiskitSolver, norb: int, nelec: int | tuple[int, int]
     ) -> np.ndarray:
@@ -253,5 +255,3 @@ class QiskitSolver:
             fake_ci_vec.density.beta_alpha["++--"], index_order=IndexType.PHYSICIST
         )
         return (self.make_rdm1s(fake_ci_vec, norb, nelec), (dm2_aa, dm2_ba.T, dm2_bb))
-
-    # TODO: implement absorb_h1e to enable UCASSCF.mc1step
