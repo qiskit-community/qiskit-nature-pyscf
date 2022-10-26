@@ -21,7 +21,11 @@ from pyscf import ao2mo
 from qiskit_nature.second_q.algorithms import GroundStateSolver
 from qiskit_nature.second_q.hamiltonians import ElectronicEnergy
 from qiskit_nature.second_q.operators.tensor_ordering import IndexType, to_chemist_ordering
-from qiskit_nature.second_q.problems import ElectronicStructureProblem, ElectronicStructureResult
+from qiskit_nature.second_q.problems import (
+    ElectronicBasis,
+    ElectronicStructureProblem,
+    ElectronicStructureResult,
+)
 from qiskit_nature.second_q.properties import (
     AngularMomentum,
     ElectronicDensity,
@@ -144,6 +148,7 @@ class QiskitSolver:
         hamiltonian.constants["inactive energy"] = ecore
 
         problem = ElectronicStructureProblem(hamiltonian)
+        problem.basis = ElectronicBasis.MO
         problem.num_spatial_orbitals = norb
         if not isinstance(nelec, tuple):
             nbeta = nelec // 2
