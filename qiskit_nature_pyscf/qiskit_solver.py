@@ -98,7 +98,7 @@ class QiskitSolver:
         self.density: ElectronicDensity = None
         self.result: ElectronicStructureResult = None
 
-    # pylint: disable=invalid-name
+    # pylint: disable=invalid-name,missing-type-doc
     def kernel(
         self,
         h1: np.ndarray | tuple[np.ndarray, np.ndarray],

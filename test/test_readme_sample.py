@@ -63,7 +63,7 @@ class TestReadmeSample(QiskitNaturePySCFTestCase):
                 return
 
         texts = out.getvalue().split("\n")
-        energy = float(texts[0][len("converged SCF energy = "):])
+        energy = float(texts[0][len("converged SCF energy = ") :])
         self.assertAlmostEqual(energy, -7.86186476980865, places=6)
 
 
