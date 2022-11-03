@@ -44,7 +44,7 @@ jobs:
         if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
       - name: Install Dependencies
         run: |
-          pip install jupyter sphinx_rtd_theme qiskit-terra[visualization]
+          pip install jupyter qiskit-terra[visualization]
           sudo apt-get install -y pandoc graphviz
         shell: bash
       - uses: ./.github/actions/install-nature-pyscf
