@@ -69,6 +69,8 @@ jobs:
           sudo apt-get -y install python3-enchant
           sudo apt-get -y install hunspell-en-us
           pip install pyenchant
+          # append to reno config
+          echo "earliest_version: 0.1.0" >> releasenotes/config.yaml
         shell: bash
       - run:  pip check
         if: ${{ !cancelled() }}
@@ -181,53 +183,8 @@ jobs:
         with:
           name: ${{ matrix.os }}-${{ matrix.python-version }}
           path: ./ci-artifact-data/*
-  Tutorials:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: [3.8, 3.9]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-          cache-dependency-path: |
-            requirements.txt
-            requirements-dev.txt
-      - uses: ./.github/actions/install-main-dependencies
-        with:
-          os: ${{ matrix.os }}
-          python-version: ${{ matrix.python-version }}
-        if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
-      - uses: ./.github/actions/install-nature-pyscf
-        with:
-          os: ${{ matrix.os }}
-      - name: Install Dependencies
-        run: |
-          pip install jupyter qiskit-terra[visualization]
-          sudo apt-get install -y pandoc graphviz
-        shell: bash
-      - name: Run Nature PySCF Tutorials
-        env:
-          QISKIT_PARALLEL: False
-          QISKIT_DOCS_BUILD_TUTORIALS: 'always'
-        run: |
-          make html
-          cd docs/_build/html
-          mkdir artifacts
-          tar -zcvf artifacts/tutorials.tar.gz --exclude=./artifacts .
-        shell: bash
-      - name: Run upload tutorials
-        uses: actions/upload-artifact@v3
-        with:
-          name: tutorials${{ matrix.python-version }}
-          path: docs/_build/html/artifacts/tutorials.tar.gz
   Deprecation_Messages_and_Coverage:
-    needs: [Checks, Nature_PySCF, Tutorials]
+    needs: [Checks, Nature_PySCF]
     runs-on: ubuntu-latest
     strategy:
       matrix:
