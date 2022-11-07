@@ -12,15 +12,13 @@ Next Steps
 
 `Getting started <getting_started.html>`_
 
-`Tutorials <tutorials/index.html>`_
-
 .. toctree::
     :hidden:
 
     Overview <self>
     Getting Started <getting_started>
-    Tutorials <tutorials/index>
     API Reference <apidocs/qiskit_nature_pyscf>
+    README <https://github.com/qiskit-community/qiskit-nature-pyscf/blob/main/README.md>
     Release Notes <release_notes>
     GitHub <https://github.com/qiskit-community/qiskit-nature-pyscf>
 
