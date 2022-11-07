@@ -6,6 +6,8 @@ Overview
 ==============
 
 **Qiskit Nature PySCF** is a third-party plugin of Qiskit Nature + PySCF.
+To get started we suggest looking at the README on Github `<https://github.com/qiskit-community/qiskit-nature-pyscf/blob/main/README.md>`_.
+
 
 Next Steps
 =================================
@@ -18,7 +20,6 @@ Next Steps
     Overview <self>
     Getting Started <getting_started>
     API Reference <apidocs/qiskit_nature_pyscf>
-    README <https://github.com/qiskit-community/qiskit-nature-pyscf/blob/main/README.md>
     Release Notes <release_notes>
     GitHub <https://github.com/qiskit-community/qiskit-nature-pyscf>
 
