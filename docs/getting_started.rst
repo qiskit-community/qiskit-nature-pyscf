@@ -73,25 +73,6 @@ specific to Qiskit Nature PySCF.
 
 ----
 
-Ready to get going?...
-======================
-
-.. raw:: html
-
-   <div class="tutorials-callout-container">
-      <div class="row">
-
-.. customcalloutitem::
-   :description: Find out about Qiskit Nature PySCF.
-   :header: Dive into the tutorials
-   :button_link:  ./tutorials/index.html
-   :button_text: Qiskit Nature PySCF tutorials
-
-.. raw:: html
-
-      </div>
-   </div>
-
 
 .. Hiding - Indices and tables
    :ref:`genindex`

@@ -1,0 +1,35 @@
+---
+features:
+  - |
+    First release of Qiskit Nature PySCF with the class
+    :class:`qiskit_nature_pyscf.runtime.QiskitSolver`
+    
+    .. code-block:: python
+    
+      from pyscf import gto, scf, mcscf
+      
+      from qiskit.algorithms.optimizers import SLSQP
+      from qiskit.primitives import Estimator
+      from qiskit_nature.second_q.algorithms import GroundStateEigensolver, VQEUCCFactory
+      from qiskit_nature.second_q.circuit.library import UCCSD
+      from qiskit_nature.second_q.mappers import ParityMapper, QubitConverter
+      
+      from qiskit_nature_pyscf import QiskitSolver
+      
+      mol = gto.M(atom="Li 0 0 0; H 0 0 1.6", basis="sto-3g")
+      
+      h_f = scf.RHF(mol).run()
+      
+      norb, nelec = 2, 2
+      
+      cas = mcscf.CASCI(h_f, norb, nelec)
+      
+      converter = QubitConverter(ParityMapper(), two_qubit_reduction=True)
+      
+      vqe = VQEUCCFactory(Estimator(), UCCSD(), SLSQP())
+      
+      algorithm = GroundStateEigensolver(converter, vqe)
+      
+      cas.fcisolver = QiskitSolver(algorithm)
+      
+      cas.run()
