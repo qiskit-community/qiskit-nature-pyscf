@@ -6,14 +6,14 @@
 
 ## Installation
 
-We encourage installing Qiskit Nature via the pip tool (a python package manager).
+We encourage installing Qiskit Nature PySCF via the pip tool (a python package manager).
 
 ```bash
 pip install qiskit-nature-pyscf
 ```
 
 **pip** will handle all dependencies automatically and you will always install the latest
-(and well-tested) version.
+(and well-tested) version. It will also install Qiskit Nature if needed.
 
 If you want to work on the very latest work-in-progress versions, either to try features ahead of
 their official release or if you want to contribute to Qiskit Nature PySCF, then you can install from source.
