@@ -150,8 +150,6 @@ runs:
         build_from_main=true
         cache_hit=${{ steps.nature-cache.outputs.cache-hit }}
         echo "cache hit: ${cache_hit}"
-        pip install -U wheel
-        pip install "setuptools<67.0.0"
         if [ "$cache_hit" == "true" ]; then
           pip_result=0
           pushd "${BASE_DIR}"
@@ -165,6 +163,7 @@ runs:
         fi
         if [ "$build_from_main" == "true" ]; then
           echo 'Create wheel file from main'
+          pip install -U wheel
           git clone --depth 1 --branch main https://github.com/Qiskit/qiskit-nature.git /tmp/qiskit-nature
           pushd /tmp/qiskit-nature
           python setup.py bdist_wheel
