@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -16,8 +16,9 @@ from test import QiskitNaturePySCFTestCase
 
 from pyscf import gto, scf, mcscf
 
-from qiskit_nature.second_q.algorithms import GroundStateEigensolver, NumPyMinimumEigensolverFactory
-from qiskit_nature.second_q.mappers import JordanWignerMapper, QubitConverter
+from qiskit.algorithms.minimum_eigensolvers import NumPyMinimumEigensolver
+from qiskit_nature.second_q.algorithms import GroundStateEigensolver
+from qiskit_nature.second_q.mappers import JordanWignerMapper
 from qiskit_nature_pyscf.qiskit_solver import QiskitSolver
 
 
@@ -37,8 +38,8 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
         qcas = mcscf.CASCI(h_f, norb, nelec)
 
         ground_state_solver = GroundStateEigensolver(
-            QubitConverter(JordanWignerMapper()),
-            NumPyMinimumEigensolverFactory(),
+            JordanWignerMapper(),
+            NumPyMinimumEigensolver(),
         )
 
         qcas.fcisolver = QiskitSolver(ground_state_solver)
@@ -60,8 +61,8 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
         qcas = mcscf.UCASCI(h_f, norb, nelec)
 
         ground_state_solver = GroundStateEigensolver(
-            QubitConverter(JordanWignerMapper()),
-            NumPyMinimumEigensolverFactory(),
+            JordanWignerMapper(),
+            NumPyMinimumEigensolver(),
         )
 
         qcas.fcisolver = QiskitSolver(ground_state_solver)
@@ -83,8 +84,8 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
         qcas = mcscf.CASSCF(h_f, norb, nelec)
 
         ground_state_solver = GroundStateEigensolver(
-            QubitConverter(JordanWignerMapper()),
-            NumPyMinimumEigensolverFactory(),
+            JordanWignerMapper(),
+            NumPyMinimumEigensolver(),
         )
 
         qcas.fcisolver = QiskitSolver(ground_state_solver)
@@ -106,8 +107,8 @@ class TestQiskitSolver(QiskitNaturePySCFTestCase):
         qcas = mcscf.UCASSCF(h_f, norb, nelec)
 
         ground_state_solver = GroundStateEigensolver(
-            QubitConverter(JordanWignerMapper()),
-            NumPyMinimumEigensolverFactory(),
+            JordanWignerMapper(),
+            NumPyMinimumEigensolver(),
         )
 
         qcas.fcisolver = QiskitSolver(ground_state_solver)
