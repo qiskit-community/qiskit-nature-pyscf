@@ -35,11 +35,14 @@ Below we show a simple example of how to do this.
 ```python
 from pyscf import gto, scf, mcscf
 
+import numpy as np
+
+from qiskit.algorithms.minimum_eigensolvers import VQE
 from qiskit.algorithms.optimizers import SLSQP
 from qiskit.primitives import Estimator
-from qiskit_nature.second_q.algorithms import GroundStateEigensolver, VQEUCCFactory
-from qiskit_nature.second_q.circuit.library import UCCSD
-from qiskit_nature.second_q.mappers import ParityMapper, QubitConverter
+from qiskit_nature.second_q.algorithms import GroundStateEigensolver
+from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
+from qiskit_nature.second_q.mappers import ParityMapper
 
 from qiskit_nature_pyscf import QiskitSolver
 
@@ -47,15 +50,29 @@ mol = gto.M(atom="Li 0 0 0; H 0 0 1.6", basis="sto-3g")
 
 h_f = scf.RHF(mol).run()
 
-norb, nelec = 2, 2
+norb = 2
+nalpha, nbeta = 1, 1
+nelec = nalpha + nbeta
 
 cas = mcscf.CASCI(h_f, norb, nelec)
 
-converter = QubitConverter(ParityMapper(), two_qubit_reduction=True)
+mapper = ParityMapper(num_particles=(nalpha, nbeta))
 
-vqe = VQEUCCFactory(Estimator(), UCCSD(), SLSQP())
+ansatz = UCCSD(
+    norb,
+    (nalpha, nbeta),
+    mapper,
+    initial_state=HartreeFock(
+        norb,
+        (nalpha, nbeta),
+        mapper,
+    ),
+)
 
-algorithm = GroundStateEigensolver(converter, vqe)
+vqe = VQE(Estimator(), ansatz, SLSQP())
+vqe.initial_point = np.zeros(ansatz.num_parameters)
+
+algorithm = GroundStateEigensolver(mapper, vqe)
 
 cas.fcisolver = QiskitSolver(algorithm)
 
@@ -66,3 +83,12 @@ More detailed documentation can be found at
 [Documentation](https://qiskit-community.github.io/qiskit-nature-pyscf/). For more detailed 
 explanations we recommend to check out the documentation of
 [PySCF](https://pyscf.org/) and [Qiskit Nature](https://qiskit.org/documentation/nature/).
+
+
+## Citation
+
+If you use this plugin, please cite the following references:
+
+- PySCF, as per [these instructions](https://github.com/pyscf/pyscf#citing-pyscf).
+- Qiskit, as per the provided [BibTeX file](https://github.com/Qiskit/qiskit/blob/master/Qiskit.bib).
+- Qiskit Nature, as per https://doi.org/10.5281/zenodo.7828767
