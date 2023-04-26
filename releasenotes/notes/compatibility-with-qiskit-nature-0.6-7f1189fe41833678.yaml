@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    You can upgrade your code to use Qiskit Nature 0.6 without needing to change
+    anything regarding this plugin. The examples have been updated to reflect
+    the newer 0.6 API of Qiskit Nature.
