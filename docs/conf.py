@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -210,7 +210,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "numpy": ("https://numpy.org/doc/stable", None),
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
-    "qiskit_nature": ("https://qiskit.org/documentation/nature", None),
+    "qiskit_nature": ("https://qiskit.org/ecosystem/nature", None),
     "qiskit": ("https://qiskit.org/documentation", None),
 }
 

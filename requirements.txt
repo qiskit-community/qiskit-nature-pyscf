@@ -1,3 +1,3 @@
-qiskit-nature>=0.5
+qiskit-nature>=0.6
 pyscf>=2.0
 setuptools>=40.1.0

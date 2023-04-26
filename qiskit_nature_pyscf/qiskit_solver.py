@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -49,11 +49,12 @@ class QiskitSolver:
 
         from pyscf import gto, scf, mcscf
 
+        from qiskit.algorithms.minimum_eigensolvers import VQE
         from qiskit.algorithms.optimizers import SLSQP
         from qiskit.primitives import Estimator
-        from qiskit_nature.second_q.algorithms import GroundStateEigensolver, VQEUCCFactory
-        from qiskit_nature.second_q.circuit.library import UCCSD
-        from qiskit_nature.second_q.mappers import ParityMapper, QubitConverter
+        from qiskit_nature.second_q.algorithms import GroundStateEigensolver
+        from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
+        from qiskit_nature.second_q.mappers import ParityMapper
 
         from qiskit_nature_pyscf import QiskitSolver
 
@@ -61,15 +62,29 @@ class QiskitSolver:
 
         h_f = scf.RHF(mol).run()
 
-        norb, nelec = 2, 2
+        norb = 2
+        nalpha, nbeta = 1, 1
+        nelec = nalpha + nbeta
 
         cas = mcscf.CASCI(h_f, norb, nelec)
 
-        converter = QubitConverter(ParityMapper(), two_qubit_reduction=True)
+        mapper = ParityMapper(num_particles=(nalpha, nbeta))
 
-        vqe = VQEUCCFactory(Estimator(), UCCSD(), SLSQP())
+        ansatz = UCCSD(
+            norb,
+            (nalpha, nbeta),
+            mapper,
+            initial_state=HartreeFock(
+                norb,
+                (nalpha, nbeta),
+                mapper,
+            ),
+        )
 
-        algorithm = GroundStateEigensolver(converter, vqe)
+        vqe = VQE(Estimator(), ansatz, SLSQP())
+        vqe.initial_point = np.zeros(ansatz.num_parameters)
+
+        algorithm = GroundStateEigensolver(mapper, vqe)
 
         cas.fcisolver = QiskitSolver(algorithm)
 
