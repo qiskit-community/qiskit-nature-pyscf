@@ -1,6 +1,6 @@
 ---
-upgrade:
+fixes:
   - |
-    You can upgrade your code to use Qiskit Nature 0.6 without needing to change
-    anything regarding this plugin. The examples have been updated to reflect
-    the newer 0.6 API of Qiskit Nature.
+    Ensures compatibility of this plugin with Qiskit Nature 0.6.
+    The examples are updated in order to avoid triggering deprecation warnings.
+    Using Qiskit Nature 0.5 is still supported.
