@@ -30,19 +30,8 @@ from datetime import date
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.append(os.path.abspath("."))
 
-"""
-Sphinx documentation builder
-"""
-
-import qiskit_sphinx_theme
 import qiskit_nature_pyscf
-from custom_directives import (
-    IncludeDirective,
-    GalleryItemDirective,
-    CustomGalleryItemDirective,
-    CustomCalloutItemDirective,
-    CustomCardItemDirective,
-)
+
 
 # Set env flag so that we can doc functions that may otherwise not be loaded
 # see for example interactive visualizations in qiskit.visualization.
@@ -107,10 +96,10 @@ extensions = [
     "sphinx.ext.doctest",
     "nbsphinx",
     "sphinx.ext.intersphinx",
+    "qiskit_sphinx_theme",
 ]
 html_static_path = ["_static"]
 templates_path = ["_templates"]
-html_css_files = ["style.css", "custom.css", "gallery.css"]
 
 nbsphinx_timeout = 360
 nbsphinx_execute = os.getenv("QISKIT_DOCS_BUILD_TUTORIALS", "never")
@@ -181,18 +170,7 @@ modindex_common_prefix = ["qiskit_nature_pyscf."]
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-#
 html_theme = "qiskit_sphinx_theme"
-
-html_theme_path = [".", qiskit_sphinx_theme.get_html_theme_path()]
-
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
 html_theme_options = {
     "logo_only": False,
     "display_version": True,
@@ -219,9 +197,4 @@ html_context = {"analytics_enabled": False}
 
 
 def setup(app):
-    app.add_directive("includenodoc", IncludeDirective)
-    app.add_directive("galleryitem", GalleryItemDirective)
-    app.add_directive("customgalleryitem", CustomGalleryItemDirective)
-    app.add_directive("customcarditem", CustomCardItemDirective)
-    app.add_directive("customcalloutitem", CustomCalloutItemDirective)
     app.setup_extension("versionutils")
