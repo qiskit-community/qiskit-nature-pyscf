@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -31,11 +31,12 @@ concurrency:
 
 jobs:
   Checks:
+    if: github.repository_owner == 'qiskit-community'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.7]
+        python-version: [3.8]
     steps:
       - name: Print Concurrency Group
         env:
@@ -108,6 +109,7 @@ jobs:
         if: ${{ !cancelled() }}
         shell: bash
   Nature_PySCF:
+    if: github.repository_owner == 'qiskit-community'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -132,6 +134,7 @@ jobs:
         with:
           os: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          terra-main: "false"
         if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
       - uses: ./.github/actions/install-nature-pyscf
         with:
@@ -144,11 +147,6 @@ jobs:
         run: |
           make mypy
         if: ${{ !cancelled() }}
-        shell: bash
-      - name: Run lint latest version
-        run: |
-          pip install -U -r requirements-dev.txt
-          make lint
         shell: bash
       - name: Stestr Cache
         uses: actions/cache@v3
@@ -177,18 +175,19 @@ jobs:
         run: |
           coverage3 combine
           mv .coverage ./ci-artifact-data/fin.dat
-        if: ${{ matrix.python-version == 3.7 }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == 3.8 }}
         shell: bash
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}-${{ matrix.python-version }}
           path: ./ci-artifact-data/*
   Deprecation_Messages_and_Coverage:
+    if: github.repository_owner == 'qiskit-community'
     needs: [Checks, Nature_PySCF]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: [3.8]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -226,7 +225,7 @@ jobs:
           sort -f -u /tmp/f37/fin.dep /tmp/f38/fin.dep /tmp/f39/fin.dep /tmp/f310/fin.dep /tmp/m38/fin.dep /tmp/m310/fin.dep || true
         shell: bash
       - name: Coverage combine
-        run: coverage3 combine /tmp/f37/fin.dat
+        run: coverage3 combine /tmp/f38/fin.dat
         shell: bash
       - name: Upload to Coveralls
         env:
