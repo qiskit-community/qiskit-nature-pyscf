@@ -81,28 +81,8 @@ runs:
             pip uninstall -y setuptools_rust
           fi
         else
-<<<<<<< HEAD
-          mkdir -p ${BASE_DIR}
-        fi
-        if [ "$build_from_main" == "true" ]; then
-          echo 'Create wheel file from main'
-          pip install -U wheel
-          pushd /tmp/qiskit-aer
-          if  [ "${{ inputs.os }}" == "macos-latest" ]; then
-            pip install -U -c constraints.txt -r requirements-dev.txt
-            python setup.py bdist_wheel --plat-name macosx-10.16-x86_64
-          else
-            python setup.py bdist_wheel
-          fi
-          popd
-          cp -rf /tmp/qiskit-aer/dist/*.whl "${BASE_DIR}"
-          pushd "${BASE_DIR}"
-          python -m pip install *.whl
-          popd
-=======
           echo 'Install Terra from Stable'
           pip install -U qiskit-terra
->>>>>>> edff115 (Various CI updates:)
         fi
       shell: bash
     - name: Install Nature from Main
