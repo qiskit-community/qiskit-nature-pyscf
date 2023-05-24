@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -18,11 +18,6 @@ import re
 
 with open('requirements.txt') as f:
     REQUIREMENTS = f.read().splitlines()
-
-if not hasattr(setuptools, 'find_namespace_packages') or not inspect.ismethod(setuptools.find_namespace_packages):
-    print("Your setuptools version:'{}' does not support PEP 420 (find_namespace_packages). "
-          "Upgrade it to version >='40.1.0' and repeat install.".format(setuptools.__version__))
-    sys.exit(1)
 
 VERSION_PATH = os.path.join(os.path.dirname(__file__), "qiskit_nature_pyscf", "VERSION.txt")
 with open(VERSION_PATH, "r") as version_file:
