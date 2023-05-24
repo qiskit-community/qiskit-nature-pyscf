@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+>>>>>>> 1d47b22 (Upgrade to qiskit_sphinx_theme 1.12 and remove translations)
 [tool.black]
 line-length = 100
 target-version = ['py37', 'py38', 'py39', 'py310']
