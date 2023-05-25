@@ -75,13 +75,6 @@ nbsphinx_prolog += link_str + "{{ docname }}"
 
 # -- General configuration ---------------------------------------------------
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
@@ -98,7 +91,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "qiskit_sphinx_theme",
 ]
-html_static_path = ["_static"]
 templates_path = ["_templates"]
 
 nbsphinx_timeout = 360
@@ -193,8 +185,3 @@ intersphinx_mapping = {
 }
 
 html_context = {"analytics_enabled": False}
-# -- Extension configuration -------------------------------------------------
-
-
-def setup(app):
-    app.setup_extension("versionutils")
