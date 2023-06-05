@@ -1,0 +1,31 @@
+---
+features:
+  - |
+    Adds the :class:`.PySCFGroundStateSolver` to provide simpler means for testing and debugging
+    classical computational workflows in Qiskit Nature. Below is an example of how to use it:
+
+    .. code-block:: python
+
+       from pyscf import fci
+
+       from qiskit_nature.second_q.drivers import MethodType, PySCFDriver
+       from qiskit_nature.second_q.transformers import ActiveSpaceTransformer
+
+       from qiskit_nature_pyscf import PySCFGroundStateSolver
+
+       driver = PySCFDriver(
+           atom="O 0.0 0.0 0.0; O 0.0 0.0 1.5",
+           basis="sto3g",
+           spin=2,
+           method=MethodType.UHF,
+       )
+       problem = driver.run()
+
+       transformer = ActiveSpaceTransformer(4, 4)
+
+       problem = transformer.transform(problem)
+
+       solver = PySCFGroundStateSolver(fci.direct_uhf.FCI())
+
+       result = solver.solve(problem)
+       print(result)
