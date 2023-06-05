@@ -63,5 +63,10 @@ setuptools.setup(
     install_requires=REQUIREMENTS,
     include_package_data=True,
     python_requires=">=3.7",
+    project_urls={
+        "Bug Tracker": "https://github.com/qiskit-community/qiskit-nature-pyscf/issues",
+        "Documentation": "https://qiskit-community.github.io/qiskit-nature-pyscf/",
+        "Source Code": "https://github.com/qiskit-community/qiskit-nature-pyscf",
+    },
     zip_safe=False
 )
