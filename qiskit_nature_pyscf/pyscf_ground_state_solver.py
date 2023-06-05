@@ -158,7 +158,7 @@ class PySCFGroundStateSolver(GroundStateSolver):
             nelec=problem.num_particles,
         )
 
-        _, multiplicity = fci.spin_square(
+        spin_square, _ = fci.spin_square(
             ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
         )
 
@@ -183,7 +183,7 @@ class PySCFGroundStateSolver(GroundStateSolver):
         )
         result.num_particles = [sum(problem.num_particles)]
         result.magnetization = [0.5 * (problem.num_alpha - problem.num_beta)]
-        result.total_angular_momentum = [0.25 * (multiplicity**2 - 1)]
+        result.total_angular_momentum = [spin_square]
         result.electronic_density = density
 
         return result
