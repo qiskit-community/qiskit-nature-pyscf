@@ -22,8 +22,8 @@ on:
       - main
       - 'stable/**'
   schedule:
-    # run every day at 1AM
-    - cron: '0 1 * * *'
+    # run every day at 2AM
+    - cron: '0 2 * * *'
 
 concurrency:
   group: ${{ github.repository }}-${{ github.ref }}-${{ github.head_ref }}-${{ github.workflow }}
@@ -115,12 +115,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: [3.7, 3.8, 3.9, '3.10', 3.11]
         include:
           - os: macos-latest
             python-version: 3.8
           - os: macos-latest
-            python-version: '3.10'
+            python-version: 3.11
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -211,18 +211,22 @@ jobs:
           path: /tmp/f310
       - uses: actions/download-artifact@v3
         with:
+          name: ubuntu-latest-3.11
+          path: /tmp/f311
+      - uses: actions/download-artifact@v3
+        with:
           name: macos-latest-3.8
           path: /tmp/m38
       - uses: actions/download-artifact@v3
         with:
-          name: macos-latest-3.10
-          path: /tmp/m310
+          name: macos-latest-3.11
+          path: /tmp/m311
       - name: Install Dependencies
         run: pip install -U coverage coveralls diff-cover
         shell: bash
       - name: Combined Deprecation Messages
         run: |
-          sort -f -u /tmp/f37/fin.dep /tmp/f38/fin.dep /tmp/f39/fin.dep /tmp/f310/fin.dep /tmp/m38/fin.dep /tmp/m310/fin.dep || true
+          sort -f -u /tmp/f37/fin.dep /tmp/f38/fin.dep /tmp/f39/fin.dep /tmp/f310/fin.dep /tmp/f311/fin.dep /tmp/m38/fin.dep /tmp/m311/fin.dep || true
         shell: bash
       - name: Coverage combine
         run: coverage3 combine /tmp/f38/fin.dat
