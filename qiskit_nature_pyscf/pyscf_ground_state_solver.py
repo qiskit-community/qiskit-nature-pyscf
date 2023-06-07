@@ -21,11 +21,7 @@ from pyscf import fci
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_nature.second_q.algorithms import GroundStateSolver
 from qiskit_nature.second_q.operators import SparseLabelOp
-from qiskit_nature.second_q.operators.tensor_ordering import (
-    IndexType,
-    find_index_order,
-    to_chemist_ordering,
-)
+from qiskit_nature.second_q.operators.tensor_ordering import find_index_order, to_chemist_ordering
 from qiskit_nature.second_q.problems import (
     BaseProblem,
     ElectronicStructureProblem,
