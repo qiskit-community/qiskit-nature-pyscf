@@ -21,7 +21,11 @@ from pyscf import fci
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_nature.second_q.algorithms import GroundStateSolver
 from qiskit_nature.second_q.operators import SparseLabelOp
-from qiskit_nature.second_q.operators.tensor_ordering import IndexType, to_chemist_ordering
+from qiskit_nature.second_q.operators.tensor_ordering import (
+    IndexType,
+    find_index_order,
+    to_chemist_ordering,
+)
 from qiskit_nature.second_q.problems import (
     BaseProblem,
     ElectronicStructureProblem,
@@ -124,7 +128,6 @@ class PySCFGroundStateSolver(GroundStateSolver):
             two_body = np.asarray(
                 to_chemist_ordering(
                     problem.hamiltonian.electronic_integrals.alpha["++--"],
-                    index_order=IndexType.PHYSICIST,
                 )
             )
         else:
@@ -134,19 +137,20 @@ class PySCFGroundStateSolver(GroundStateSolver):
                     problem.hamiltonian.electronic_integrals.beta["+-"],
                 ]
             )
+            index_order = find_index_order(problem.hamiltonian.electronic_integrals.alpha["++--"])
             two_body = np.asarray(
                 [
                     to_chemist_ordering(
                         problem.hamiltonian.electronic_integrals.alpha["++--"],
-                        index_order=IndexType.PHYSICIST,
+                        index_order=index_order,
                     ),
                     to_chemist_ordering(
                         problem.hamiltonian.electronic_integrals.alpha_beta["++--"],
-                        index_order=IndexType.PHYSICIST,
+                        index_order=index_order,
                     ),
                     to_chemist_ordering(
                         problem.hamiltonian.electronic_integrals.beta["++--"],
-                        index_order=IndexType.PHYSICIST,
+                        index_order=index_order,
                     ),
                 ]
             )
