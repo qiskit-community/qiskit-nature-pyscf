@@ -18,9 +18,8 @@ inputs:
     required: true
 runs:
   using: "composite"
-  steps: 
+  steps:
     - run : |
+        pip install -U -c constraints.txt -r requirements-dev.txt -r requirements.txt
         pip install -e .
-        pip install qiskit-nature[pyscf,mpl,sparse]
-        pip install -U -c constraints.txt -r requirements-dev.txt
       shell: bash

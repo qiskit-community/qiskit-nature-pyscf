@@ -135,6 +135,7 @@ jobs:
           os: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
           terra-main: "false"
+          nature-main: "false"
         if: ${{ !startsWith(github.ref, 'refs/heads/stable') && !startsWith(github.base_ref, 'stable/') }}
       - uses: ./.github/actions/install-nature-pyscf
         with:
