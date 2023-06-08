@@ -18,6 +18,7 @@ import logging
 
 import numpy as np
 from pyscf import fci
+from qiskit.opflow import PauliSumOp
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_nature.second_q.algorithms import GroundStateSolver
 from qiskit_nature.second_q.operators import SparseLabelOp
@@ -35,14 +36,14 @@ LOGGER = logging.getLogger(__name__)
 class PySCFGroundStateSolver(GroundStateSolver):
     """A PySCF-based GroundStateSolver for Qiskit Nature.
 
-    This class provides a ``GroundStateSolver`` for Qiskit Nature, leveraging the ``fci`` module of
-    PySCF. This is utility does not enable any Quantum algorithms to be used (since it replaces them
-    in the Qiskit workflow) but instead provides a useful utility for debugging classical
-    computational workflows based on Qiskit Nature.
+    This class provides a :class:`~qiskit_nature.second_q.algorithms.GroundStateSolver` for Qiskit
+    Nature, leveraging the ``fci`` module of PySCF. This is utility does not enable any Quantum
+    algorithms to be used (since it replaces them in the Qiskit workflow) but instead provides a
+    useful utility for debugging classical computational workflows based on Qiskit Nature.
     More importantly, it provides a more efficient implementation of what Qiskit otherwise achieves
-    using a ``NumPyMinimumEigensolver`` in combination with a ``filter_criterion``. For non-singlet
-    spin ground states the setup using Qiskit components is a lot more involved, whereas this class
-    provides an easy-to-use alternative.
+    using a :class:`~qiskit.algorithms.minimum_eigensolvers.NumPyMinimumEigensolver` in combination
+    with a ``filter_criterion``. For non-singlet spin ground states the setup using Qiskit
+    components is a lot more involved, whereas this class provides an easy-to-use alternative.
 
     Here is an example use cas:
 
@@ -73,7 +74,7 @@ class PySCFGroundStateSolver(GroundStateSolver):
        print(result)
 
     For more details please to the documentation of [PySCF](https://pyscf.org/) and
-    [Qiskit Nature](https://qiskit.org/documentation/nature/).
+    [Qiskit Nature](https://qiskit.org/ecosystem/nature/).
     """
 
     def __init__(self, solver: fci.direct_spin1.FCISolver) -> None:
@@ -91,9 +92,11 @@ class PySCFGroundStateSolver(GroundStateSolver):
     ) -> ElectronicStructureResult:
         """Finds the ground-state of the provided problem.
 
-        This method is written to match the ``GroundStateSolver`` API of Qiskit Nature but it does
-        not support the evaluation of ``aux_operators`` and will ignore them.
-        It is also only capable of solving an ``ElectronicStructureProblem`` and will raise an error
+        This method is written to match the
+        :class:`~qiskit_nature.second_q.algorithms.GroundStateSolver` API of Qiskit Nature but it
+        does not support the evaluation of ``aux_operators`` and will ignore them.
+        It is also only capable of solving an
+        :class:`~qiskit_nature.second_q.problems.ElectronicStructureProblem` and will raise an error
         if another problem object is provided.
 
         Args:
@@ -101,16 +104,22 @@ class PySCFGroundStateSolver(GroundStateSolver):
             aux_operators: **ignored**.
 
         Raises:
-            RuntimeError: if a problem other than an ``ElectronicStructureProblem`` is provided.
+            TypeError: if a problem other than an
+                :class:`~qiskit_nature.second_q.problems.ElectronicStructureProblem` is provided.
 
         Returns:
             The interpreted result object in Qiskit Nature format.
         """
         if aux_operators is not None:
-            LOGGER.warning("Ignored.")
+            LOGGER.warning(
+                "This solver does not support auxiliary operators. They will be ignored."
+            )
 
         if not isinstance(problem, ElectronicStructureProblem):
-            raise RuntimeError("Unsupported problem type.")
+            raise TypeError(
+                "This solver only supports an ElectronicStructureProblem but you provided a "
+                f"problem of type '{type(problem)}'."
+            )
 
         e_ints = problem.hamiltonian.electronic_integrals
 
@@ -188,14 +197,23 @@ class PySCFGroundStateSolver(GroundStateSolver):
 
         return result
 
-    get_qubit_operators = None
-    """This class does not deal with qubit operators."""
+    def get_qubit_operators(
+        self,
+        problem: BaseProblem,
+        aux_operators: dict[str, SparseLabelOp | SparsePauliOp | PauliSumOp] | None = None,
+    ) -> tuple[SparsePauliOp | PauliSumOp, dict[str, SparsePauliOp | PauliSumOp] | None]:
+        """This solver does not deal with qubit operators and this method raises a RuntimeError."""
+        raise RuntimeError(
+            "This solver is a purely classical one and as such solves an ElectronicStructureProblem"
+            " on the second-quantization level. Thus, it has no concept of qubit operators and does"
+            " not support this method."
+        )
 
     def supports_aux_operators(self) -> bool:
         """Returns whether the eigensolver supports auxiliary operators."""
         return False
 
     @property
-    def solver(self):
+    def solver(self) -> fci.direct_spin1.FCISolver:
         """Returns the solver."""
         return self._solver
