@@ -55,6 +55,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering"
     ],
     keywords='qiskit sdk quantum nature chemistry physics pyscf',
@@ -62,5 +63,10 @@ setuptools.setup(
     install_requires=REQUIREMENTS,
     include_package_data=True,
     python_requires=">=3.7",
+    project_urls={
+        "Bug Tracker": "https://github.com/qiskit-community/qiskit-nature-pyscf/issues",
+        "Documentation": "https://qiskit-community.github.io/qiskit-nature-pyscf/",
+        "Source Code": "https://github.com/qiskit-community/qiskit-nature-pyscf",
+    },
     zip_safe=False
 )
