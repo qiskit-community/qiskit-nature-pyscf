@@ -91,7 +91,7 @@ class QiskitSolver:
         cas.run()
 
     For more details please to the documentation of [PySCF](https://pyscf.org/) and
-    [Qiskit Nature](https://qiskit.org/documentation/nature/).
+    [Qiskit Nature](https://qiskit.org/ecosystem/nature/).
 
     An instance of this class has the following attributes:
 
