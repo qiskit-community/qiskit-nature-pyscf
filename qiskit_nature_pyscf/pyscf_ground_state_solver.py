@@ -18,7 +18,6 @@ import logging
 
 import numpy as np
 from pyscf import fci
-from qiskit.opflow import PauliSumOp
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_nature.second_q.algorithms import GroundStateSolver
 from qiskit_nature.second_q.operators import SparseLabelOp
@@ -200,8 +199,8 @@ class PySCFGroundStateSolver(GroundStateSolver):
     def get_qubit_operators(
         self,
         problem: BaseProblem,
-        aux_operators: dict[str, SparseLabelOp | SparsePauliOp | PauliSumOp] | None = None,
-    ) -> tuple[SparsePauliOp | PauliSumOp, dict[str, SparsePauliOp | PauliSumOp] | None]:
+        aux_operators: dict[str, SparseLabelOp | SparsePauliOp] | None = None,
+    ) -> tuple[SparsePauliOp, dict[str, SparsePauliOp] | None]:
         """This solver does not deal with qubit operators and this method raises a RuntimeError."""
         raise RuntimeError(
             "This solver is a purely classical one and as such solves an ElectronicStructureProblem"
