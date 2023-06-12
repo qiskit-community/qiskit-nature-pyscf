@@ -13,9 +13,8 @@ In addition to the general guidelines above there are specific details for
 contributing to Qiskit Nature PySCF.
 
 You should first install the python development libraries by running
-`pip install -r requirements-dev.txt` from the root of the
-Nature PySCF repository clone and then
-follow the  guidelines below.
+`pip install -r requirements-dev.txt` from the root of the Qiskit Nature PySCF
+repository clone and then follow the guidelines below.
 
 ### Project Code Style.
 
@@ -29,7 +28,7 @@ When submitting a pull request and you feel it is ready for review,
 please ensure that:
 
 1. The code follows the _code style_ of this project and successfully
-   passes the _unit tests_. Nature PySCF uses [Pylint](https://www.pylint.org) and
+   passes the _unit tests_. Qiskit Nature PySCF uses [Pylint](https://www.pylint.org) and
    [PEP8](https://www.python.org/dev/peps/pep-0008) style guidelines.
    
    You can run
@@ -37,7 +36,7 @@ please ensure that:
    make lint
    make style 
    ```
-   from the root of the Nature PySCF repository clone for lint and style conformance checks.
+   from the root of the Qiskit Nature PySCF repository clone for lint and style conformance checks.
 
    If your code fails the local style checks (specifically the black
    code formatting check) you can use `make black` to automatically
@@ -57,7 +56,7 @@ please ensure that:
    ```shell script
     make html
    ```
-   from the root of the Nature PySCF repository clone. You might also like to check the html output
+   from the root of the Qiskit Nature PySCF repository clone. You might also like to check the html output
    to see the changes formatted output is as expected. You will find an index.html
    file in docs\_build\html and you can navigate from there.
    
@@ -70,7 +69,7 @@ please ensure that:
    
    For some words, such as names, technical terms, referring to parameters of the method etc., 
    that are not in the en-us dictionary and get flagged as being misspelled, despite being correct,
-   there is a [.pylintdict](./.pylintdict) custom word list file, in the root of the Nature PySCF repo,
+   there is a [.pylintdict](./.pylintdict) custom word list file, in the root of the Qiskit Nature PySCF repo,
    where such words can be added, in alphabetic order, as needed.
    
 3. If it makes sense for your change that you have added new tests that
@@ -216,7 +215,7 @@ After release notes have been added if you want to see what the full output of
 the release notes. In general the output from reno that we'll get is a rst
 (ReStructuredText) file that can be compiled by
 [sphinx](https://www.sphinx-doc.org/en/master/). To generate the rst file you
-use the ``reno report`` command. If you want to generate the full Nature PySCF release
+use the ``reno report`` command. If you want to generate the full Qiskit Nature PySCF release
 notes for all releases (since we started using reno during 0.9) you just run::
 
     reno report
@@ -242,18 +241,11 @@ particular will be located at `docs/_build/html/release_notes.html`
 ## Installing Qiskit Nature PySCF from source
 
 Please see the [Installing Qiskit Nature PySCF from
-Source](https://github.com/Qiskit/qiskit-nature-pyscf#installatione)
-section of the Qiskit documentation.
+Source](https://qiskit-community.github.io/qiskit-nature-pyscf/getting_started.html)
+section of the documentation.
 
-Note: Nature PySCF depends on Terra, and has optional dependence on Aer and IBM Q Provider, so
-these should be installed too. The main branch of Nature PySCF is kept working with those other element
-main branches so these should be installed from source too following the instructions at 
-the same location
-
-Nature PySCF also has some other optional dependents see 
-[Nature PySCF optional installs](https://github.com/Qiskit/qiskit-nature-pyscf#optional-installs) for
-further information. Unit tests that require any of the optional dependents will check
-and skip the test if not installed.
+Note: Qiskit Nature PySCF depends on Qiskit Nature and PySCF so you may want to
+install those from source, too.
 
 ### Testing
 
@@ -267,17 +259,12 @@ run all unit tests. Another way to run the test suite is to use
 [**tox**](https://tox.readthedocs.io/en/latest/#). For more information about using tox please
 refer to
 [Terra CONTRIBUTING](https://github.com/Qiskit/qiskit-terra/blob/main/CONTRIBUTING.md#test)
-Test section. However please note Nature PySCF does not have any
+Test section. However please note Qiskit Nature PySCF does not have any
 [online tests](https://github.com/Qiskit/qiskit-terra/blob/main/CONTRIBUTING.md#online-tests)
 nor does it have
 [test skip
  options](https://github.com/Qiskit/qiskit-terra/blob/main/CONTRIBUTING.md#test-skip-options).    
 
-### Development Cycle
-
-The development cycle for qiskit-Nature PySCF is informed by release plans in the 
-[Qiskit rfcs repository](https://github.com/Qiskit/rfcs)
- 
 ### Branches
 
 * `main`:

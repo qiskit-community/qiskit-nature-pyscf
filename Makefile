@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -40,28 +40,28 @@ SPHINXOPTS    =
 all_check: spell style lint copyright mypy clean_sphinx html doctest
 
 lint:
-	pylint -rn qiskit_nature_pyscf test tools
+	python -m pylint -rn qiskit_nature_pyscf test tools
 	python tools/verify_headers.py qiskit_nature_pyscf test tools
 	python tools/find_stray_release_notes.py
 
 mypy:
-	mypy qiskit_nature_pyscf test tools
+	python -m mypy qiskit_nature_pyscf test tools
 
 style:
-	black --check qiskit_nature_pyscf test tools docs
+	python -m black --check qiskit_nature_pyscf test tools docs
 
 black:
-	black qiskit_nature_pyscf test tools docs
+	python -m black qiskit_nature_pyscf test tools docs
 
 test:
 	python -m unittest discover -v test
 
 test_ci:
 	echo "Detected $(NPROCS) CPUs running with $(CONCURRENCY) workers"
-	stestr run --concurrency $(CONCURRENCY)
+	python -m stestr run --concurrency $(CONCURRENCY)
 
 spell:
-	pylint -rn --disable=all --enable=spelling --spelling-dict=en_US --spelling-private-dict-file=.pylintdict qiskit_nature_pyscf test tools
+	python -m pylint -rn --disable=all --enable=spelling --spelling-dict=en_US --spelling-private-dict-file=.pylintdict qiskit_nature_pyscf test tools
 	sphinx-build -M spelling docs docs/_build -W -T --keep-going $(SPHINXOPTS)
 
 copyright:
@@ -77,10 +77,10 @@ clean_sphinx:
 	make -C docs clean
 
 coverage:
-	coverage3 run --source qiskit_nature_pyscf -m unittest discover -s test -q
-	coverage3 report
+	python -m coverage3 run --source qiskit_nature_pyscf -m unittest discover -s test -q
+	python -m coverage3 report
 
 coverage_erase:
-	coverage erase
+	python -m coverage erase
 
 clean: clean_sphinx coverage_erase;

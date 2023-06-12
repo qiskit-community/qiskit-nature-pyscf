@@ -39,7 +39,7 @@ os.environ["QISKIT_DOCS"] = "TRUE"
 
 # -- Project information -----------------------------------------------------
 project = "Qiskit Nature PySCF"
-copyright = f"{date.today().year}, Qiskit Nature PySCF Development Team"  # pylint: disable=redefined-builtin
+copyright = f"2022, {date.today().year}, Qiskit Nature PySCF Development Team"  # pylint: disable=redefined-builtin
 author = "Qiskit Nature PySCF Development Team"
 
 # The short X.Y version
@@ -84,7 +84,6 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx_design",
     "jupyter_sphinx",
-    "sphinx_autodoc_typehints",
     "reno.sphinxext",
     "sphinx.ext.doctest",
     "nbsphinx",
@@ -111,6 +110,12 @@ autosummary_generate_overwrite = False
 # -----------------------------------------------------------------------------
 # Autodoc
 # -----------------------------------------------------------------------------
+# Move type hints from signatures to the parameter descriptions (except in overload cases, where
+# that's not possible).
+autodoc_typehints = "description"
+# Only add type hints from signature to description body if the parameter has documentation.  The
+# return type is always added to the description (if in the signature).
+autodoc_typehints_description_target = "documented_params"
 
 autodoc_default_options = {
     "inherited-members": None,
@@ -140,7 +145,7 @@ gettext_compact = False  # optional.
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["_build", "**.ipynb_checkpoints"]
+exclude_patterns = ["**site-packages", "_build", "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "colorful"
@@ -184,4 +189,4 @@ intersphinx_mapping = {
     "qiskit": ("https://qiskit.org/documentation", None),
 }
 
-html_context = {"analytics_enabled": False}
+html_context = {"analytics_enabled": True}
