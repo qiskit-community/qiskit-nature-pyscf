@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-name: Nature PySCF Unit Tests
+name: Qiskit Nature PySCF Unit Tests
 
 on:
   push:
@@ -159,7 +159,7 @@ jobs:
             stestr-${{ matrix.os }}-${{ matrix.python-version }}-
             stestr-${{ matrix.os }}-
         if: ${{ !cancelled() }}
-      - name: Nature PySCF Unit Tests under Python ${{ matrix.python-version }}
+      - name: Qiskit Nature PySCF Unit Tests under Python ${{ matrix.python-version }}
         uses: ./.github/actions/run-tests
         with:
           os: ${{ matrix.os }}

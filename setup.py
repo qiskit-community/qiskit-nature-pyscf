@@ -10,22 +10,23 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-import setuptools
 import inspect
-import sys
 import os
 import re
+import sys
 
-with open('requirements.txt') as f:
+import setuptools
+
+with open("requirements.txt", "r", encoding="utf-8") as f:
     REQUIREMENTS = f.read().splitlines()
 
 VERSION_PATH = os.path.join(os.path.dirname(__file__), "qiskit_nature_pyscf", "VERSION.txt")
-with open(VERSION_PATH, "r") as version_file:
+with open(VERSION_PATH, "r", encoding="utf-8") as version_file:
     VERSION = version_file.read().strip()
 
 # Read long description from README.
 README_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")
-with open(README_PATH) as readme_file:
+with open(README_PATH, "r", encoding="utf-8") as readme_file:
     README = re.sub(
         "<!--- long-description-skip-begin -->.*<!--- long-description-skip-end -->",
         "",
@@ -34,15 +35,15 @@ with open(README_PATH) as readme_file:
     )
 
 setuptools.setup(
-    name='qiskit-nature-pyscf',
+    name="qiskit-nature-pyscf",
     version=VERSION,
-    description='Qiskit Nature PySCF: Third-party integration plugin of Qiskit Nature + PySCF.',
+    description="Qiskit Nature PySCF: Third-party integration plugin of Qiskit Nature + PySCF.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url='https://github.com/qiskit-community/qiskit-nature-pyscf',
-    author='Qiskit Nature PySCF Development Team',
-    author_email='hello@qiskit.org',
-    license='Apache-2.0',
+    url="https://github.com/qiskit-community/qiskit-nature-pyscf",
+    author="Qiskit Nature PySCF Development Team",
+    author_email="hello@qiskit.org",
+    license="Apache-2.0",
     classifiers=[
         "Environment :: Console",
         "License :: OSI Approved :: Apache Software License",
@@ -56,10 +57,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Topic :: Scientific/Engineering"
+        "Topic :: Scientific/Engineering",
     ],
-    keywords='qiskit sdk quantum nature chemistry physics pyscf',
-    packages=setuptools.find_packages(include=['qiskit_nature_pyscf', 'qiskit_nature_pyscf.*']),
+    keywords="qiskit sdk quantum nature chemistry physics pyscf",
+    packages=setuptools.find_packages(include=["qiskit_nature_pyscf", "qiskit_nature_pyscf.*"]),
     install_requires=REQUIREMENTS,
     include_package_data=True,
     python_requires=">=3.7",
@@ -68,5 +69,5 @@ setuptools.setup(
         "Documentation": "https://qiskit-community.github.io/qiskit-nature-pyscf/",
         "Source Code": "https://github.com/qiskit-community/qiskit-nature-pyscf",
     },
-    zip_safe=False
+    zip_safe=False,
 )
