@@ -52,7 +52,6 @@ setuptools.setup(
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -63,7 +62,7 @@ setuptools.setup(
     packages=setuptools.find_packages(include=["qiskit_nature_pyscf", "qiskit_nature_pyscf.*"]),
     install_requires=REQUIREMENTS,
     include_package_data=True,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     project_urls={
         "Bug Tracker": "https://github.com/qiskit-community/qiskit-nature-pyscf/issues",
         "Documentation": "https://qiskit-community.github.io/qiskit-nature-pyscf/",
