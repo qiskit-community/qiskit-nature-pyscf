@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    The :class:`~qiskit_nature.second_q.properties.ElectronicDensity` object that was returned as part of the
+    :class:`~qiskit_nature.second_q.problems.ElectronicStructureResult` from the :class:`.PySCFGroundStateSolver`
+    was faultily storing restricted-spin information within the alpha-spin register even though the object is
+    documented as storing unrestricted spin-data. This has been fixed and the
+    :class:`~qiskit_nature.second_q.properties.ElectronicDensity` object is now guaranteed to store
+    unrestricted-spin information. If a restricted-spin density is required it may be obtained from the
+    :meth:`~qiskit_nature.second_q.properties.ElectronicDensity.trace_spin` method.

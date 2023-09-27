@@ -166,17 +166,10 @@ class PySCFGroundStateSolver(GroundStateSolver):
             nelec=problem.num_particles,
         )
 
-        density: ElectronicDensity
-        if restricted_spin:
-            raw_density = self.solver.make_rdm1(
-                ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
-            )
-            density = ElectronicDensity.from_raw_integrals(raw_density)
-        else:
-            raw_density = self.solver.make_rdm1s(
-                ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
-            )
-            density = ElectronicDensity.from_raw_integrals(raw_density[0], h1_b=raw_density[1])
+        raw_density = self.solver.make_rdm1s(
+            ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
+        )
+        density = ElectronicDensity.from_raw_integrals(raw_density[0], h1_b=raw_density[1])
 
         result = ElectronicStructureResult()
         result.computed_energies = np.asarray([energy])
