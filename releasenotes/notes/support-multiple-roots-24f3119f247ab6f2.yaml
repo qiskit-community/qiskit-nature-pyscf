@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support was added for ``FCISolver`` instances which have their ``nroots``
+    attribute set to a value higher than 1, indicating that they also compute
+    excited states.
