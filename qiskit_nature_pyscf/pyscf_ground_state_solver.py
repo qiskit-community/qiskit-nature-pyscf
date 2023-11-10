@@ -166,29 +166,36 @@ class PySCFGroundStateSolver(GroundStateSolver):
             nelec=problem.num_particles,
         )
 
-        density: ElectronicDensity
-        if restricted_spin:
-            raw_density = self.solver.make_rdm1(
-                ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
-            )
-            density = ElectronicDensity.from_raw_integrals(raw_density)
-        else:
-            raw_density = self.solver.make_rdm1s(
-                ci_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
-            )
-            density = ElectronicDensity.from_raw_integrals(raw_density[0], h1_b=raw_density[1])
+        if not isinstance(energy, np.ndarray):
+            energy = [energy]
+
+        gs_vec = ci_vec
+        if isinstance(ci_vec, list):
+            gs_vec = ci_vec[0]
+
+        raw_density = self.solver.make_rdm1s(
+            gs_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
+        )
+        density = ElectronicDensity.from_raw_integrals(raw_density[0], h1_b=raw_density[1])
 
         result = ElectronicStructureResult()
-        result.computed_energies = np.asarray([energy])
+        result.computed_energies = np.asarray(energy)
         result.hartree_fock_energy = problem.reference_energy
         result.extracted_transformer_energies = dict(problem.hamiltonian.constants.items())
         result.nuclear_repulsion_energy = result.extracted_transformer_energies.pop(
             "nuclear_repulsion_energy", None
         )
-        result.num_particles = [sum(problem.num_particles)]
-        result.magnetization = [float("NaN")]
-        result.total_angular_momentum = [float("NaN")]
+        result.num_particles = [sum(problem.num_particles)] * len(energy)
+        result.magnetization = [float("NaN")] * len(energy)
+        result.total_angular_momentum = [float("NaN")] * len(energy)
+        # NOTE: the ElectronicStructureResult does not yet support multiple densities. Thus, we only
+        # have the ground-state density here, regardless of how many roots were computed.
         result.electronic_density = density
+
+        # TODO: we should figure out a way to include the `ci_vec` in the returned result. This
+        # would allow users to do additional computations themselves, if needed.
+        # This is likely pending improvements to the `Result` classes in Qiskit Nature. See for
+        # example: https://github.com/qiskit-community/qiskit-nature/issues/1198
 
         return result
 

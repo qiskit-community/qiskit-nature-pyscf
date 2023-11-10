@@ -63,3 +63,28 @@ class TestPySCFGroundStateSolver(QiskitNaturePySCFTestCase):
         casci.run()
 
         self.assertAlmostEqual(casci.e_tot, result.total_energies[0])
+
+    def test_nroots_support(self):
+        """Test support for more than ground-state calculations."""
+        driver = PySCFDriver(
+            atom="H 0.0 0.0 0.0; H 0.0 0.0 1.5",
+            basis="sto3g",
+        )
+        problem = driver.run()
+
+        fci_solver = fci.direct_spin1.FCI()
+        fci_solver.nroots = 2
+        solver = PySCFGroundStateSolver(fci_solver)
+
+        result = solver.solve(problem)
+        print(result)
+
+        casci = mcscf.CASCI(driver._calc, 2, 2)
+        casci.fcisolver.nroots = 2
+        casci.run()
+
+        self.assertAlmostEqual(casci.e_tot[0], result.total_energies[0])
+        self.assertAlmostEqual(casci.e_tot[1], result.total_energies[1])
+        self.assertEqual(len(result.num_particles), 2)
+        self.assertEqual(len(result.magnetization), 2)
+        self.assertEqual(len(result.total_angular_momentum), 2)
