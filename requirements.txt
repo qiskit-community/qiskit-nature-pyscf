@@ -1,3 +1,2 @@
 qiskit-nature>=0.6
-qiskit-algorithms>=0.2.1
 pyscf>=2.0
