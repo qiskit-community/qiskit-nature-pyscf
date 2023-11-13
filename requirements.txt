@@ -1,2 +1,2 @@
-qiskit-nature>=0.6
+qiskit-nature>=0.7
 pyscf>=2.0

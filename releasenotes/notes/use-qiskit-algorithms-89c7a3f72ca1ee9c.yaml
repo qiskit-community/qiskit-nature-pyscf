@@ -1,0 +1,5 @@
+---
+prelude: >
+    The use of the deprecated ``qiskit.algorithms`` module has been replaced by
+    the new ``qiskit-algorithms`` package which provide a drop-in replacement in
+    the form of the ``qiskit_algorithms`` module.

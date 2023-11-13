@@ -37,9 +37,9 @@ from pyscf import gto, scf, mcscf
 
 import numpy as np
 
-from qiskit.algorithms.minimum_eigensolvers import VQE
-from qiskit.algorithms.optimizers import SLSQP
 from qiskit.primitives import Estimator
+from qiskit_algorithms import VQE
+from qiskit_algorithms.optimizers import SLSQP
 from qiskit_nature.second_q.algorithms import GroundStateEigensolver
 from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
 from qiskit_nature.second_q.mappers import ParityMapper

@@ -16,7 +16,7 @@ from test import QiskitNaturePySCFTestCase
 
 from pyscf import gto, scf, mcscf
 
-from qiskit.algorithms.minimum_eigensolvers import NumPyMinimumEigensolver
+from qiskit_algorithms import NumPyMinimumEigensolver
 from qiskit_nature.second_q.algorithms import GroundStateEigensolver
 from qiskit_nature.second_q.mappers import JordanWignerMapper
 from qiskit_nature_pyscf.qiskit_solver import QiskitSolver

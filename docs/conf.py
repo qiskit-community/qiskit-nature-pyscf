@@ -174,6 +174,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "numpy": ("https://numpy.org/doc/stable", None),
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
+    "qiskit_algorithms": ("https://qiskit.org/ecosystem/algorithms", None),
     "qiskit_nature": ("https://qiskit.org/ecosystem/nature", None),
     "qiskit": ("https://qiskit.org/documentation", None),
 }

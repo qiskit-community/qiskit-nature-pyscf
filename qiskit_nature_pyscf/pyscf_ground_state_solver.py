@@ -40,9 +40,9 @@ class PySCFGroundStateSolver(GroundStateSolver):
     algorithms to be used (since it replaces them in the Qiskit workflow) but instead provides a
     useful utility for debugging classical computational workflows based on Qiskit Nature.
     More importantly, it provides a more efficient implementation of what Qiskit otherwise achieves
-    using a :class:`~qiskit.algorithms.minimum_eigensolvers.NumPyMinimumEigensolver` in combination
-    with a ``filter_criterion``. For non-singlet spin ground states the setup using Qiskit
-    components is a lot more involved, whereas this class provides an easy-to-use alternative.
+    using a :class:`~qiskit_algorithms.NumPyMinimumEigensolver` in combination with a
+    ``filter_criterion``. For non-singlet spin ground states the setup using Qiskit components is a
+    lot more involved, whereas this class provides an easy-to-use alternative.
 
     Here is an example use cas:
 
