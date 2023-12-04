@@ -192,11 +192,6 @@ class PySCFGroundStateSolver(GroundStateSolver):
         # have the ground-state density here, regardless of how many roots were computed.
         result.electronic_density = density
 
-        # TODO: we should figure out a way to include the `ci_vec` in the returned result. This
-        # would allow users to do additional computations themselves, if needed.
-        # This is likely pending improvements to the `Result` classes in Qiskit Nature. See for
-        # example: https://github.com/qiskit-community/qiskit-nature/issues/1198
-
         return result
 
     def get_qubit_operators(
