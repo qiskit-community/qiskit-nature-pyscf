@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    The :class:`.PySCFGroundStateSolver` now also computes the magnetization ($S^z$)
+    and total angular momentum ($S^2$) values for all computes roots. In doing so,
+    it properly takes the alpha-beta overlap matrix from the
+    ``qiskit_nature.second_q.properties.AngularMomentum.overlap`` property into account.
+    When this overlap is non-unitary, the spin-contamination within the active subspace
+    is computed correctly. For more details, see also:
+
+    * <https://github.com/qiskit-community/qiskit-nature/issues/1273>_
+    * <https://github.com/qiskit-community/qiskit-nature/pull/1275>_
+    * <https://github.com/qiskit-community/qiskit-nature/issues/1291>_
+    * <https://github.com/qiskit-community/qiskit-nature/pull/1292>_
