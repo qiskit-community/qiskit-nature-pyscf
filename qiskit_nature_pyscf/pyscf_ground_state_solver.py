@@ -167,7 +167,7 @@ class PySCFGroundStateSolver(GroundStateSolver):
         )
 
         if not isinstance(energy, np.ndarray):
-            # computed a single root, but in the following we pretent to always have multiple ones
+            # computed a single root, but in the following we pretend to always have multiple ones
             energy = [energy]
             ci_vec = [ci_vec]
 
