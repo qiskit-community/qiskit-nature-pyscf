@@ -40,6 +40,8 @@ class TestPySCFGroundStateSolver(QiskitNaturePySCFTestCase):
         casci.run()
 
         self.assertAlmostEqual(casci.e_tot, result.total_energies[0])
+        self.assertAlmostEqual(result.magnetization[0], 0.0)
+        self.assertAlmostEqual(result.total_angular_momentum[0], 0.0)
 
     def test_direct_uhf_fci(self):
         """Test with the ``fci.direct_uhf.FCISolver``."""
@@ -63,6 +65,8 @@ class TestPySCFGroundStateSolver(QiskitNaturePySCFTestCase):
         casci.run()
 
         self.assertAlmostEqual(casci.e_tot, result.total_energies[0])
+        self.assertAlmostEqual(result.magnetization[0], 1.0)
+        self.assertAlmostEqual(result.total_angular_momentum[0], 1.99988454)
 
     def test_nroots_support(self):
         """Test support for more than ground-state calculations."""
@@ -77,7 +81,6 @@ class TestPySCFGroundStateSolver(QiskitNaturePySCFTestCase):
         solver = PySCFGroundStateSolver(fci_solver)
 
         result = solver.solve(problem)
-        print(result)
 
         casci = mcscf.CASCI(driver._calc, 2, 2)
         casci.fcisolver.nroots = 2
@@ -85,6 +88,9 @@ class TestPySCFGroundStateSolver(QiskitNaturePySCFTestCase):
 
         self.assertAlmostEqual(casci.e_tot[0], result.total_energies[0])
         self.assertAlmostEqual(casci.e_tot[1], result.total_energies[1])
-        self.assertEqual(len(result.num_particles), 2)
-        self.assertEqual(len(result.magnetization), 2)
-        self.assertEqual(len(result.total_angular_momentum), 2)
+        self.assertAlmostEqual(result.num_particles[0], 2.0)
+        self.assertAlmostEqual(result.num_particles[1], 2.0)
+        self.assertAlmostEqual(result.magnetization[0], 0.0)
+        self.assertAlmostEqual(result.magnetization[1], 0.0)
+        self.assertAlmostEqual(result.total_angular_momentum[0], 0.0)
+        self.assertAlmostEqual(result.total_angular_momentum[1], 2.0)

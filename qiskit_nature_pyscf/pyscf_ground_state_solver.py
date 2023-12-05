@@ -167,16 +167,28 @@ class PySCFGroundStateSolver(GroundStateSolver):
         )
 
         if not isinstance(energy, np.ndarray):
+            # computed a single root, but in the following we pretend to always have multiple ones
             energy = [energy]
-
-        gs_vec = ci_vec
-        if isinstance(ci_vec, list):
-            gs_vec = ci_vec[0]
+            ci_vec = [ci_vec]
 
         raw_density = self.solver.make_rdm1s(
-            gs_vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
+            ci_vec[0], norb=problem.num_spatial_orbitals, nelec=problem.num_particles
         )
         density = ElectronicDensity.from_raw_integrals(raw_density[0], h1_b=raw_density[1])
+
+        overlap_ab: np.ndarray | None = None
+        if problem.properties.angular_momentum is not None:
+            overlap_ab = problem.properties.angular_momentum.overlap
+
+        magnetization: list[float] = []
+        angular_momentum: list[float] = []
+        for vec in ci_vec:
+            densities = self.solver.make_rdm12s(
+                vec, norb=problem.num_spatial_orbitals, nelec=problem.num_particles
+            )
+            spin_square, spin_z = self._compute_spin(densities, overlap_ab)
+            magnetization.append(spin_z)
+            angular_momentum.append(spin_square)
 
         result = ElectronicStructureResult()
         result.computed_energies = np.asarray(energy)
@@ -186,16 +198,11 @@ class PySCFGroundStateSolver(GroundStateSolver):
             "nuclear_repulsion_energy", None
         )
         result.num_particles = [sum(problem.num_particles)] * len(energy)
-        result.magnetization = [float("NaN")] * len(energy)
-        result.total_angular_momentum = [float("NaN")] * len(energy)
+        result.magnetization = magnetization
+        result.total_angular_momentum = angular_momentum
         # NOTE: the ElectronicStructureResult does not yet support multiple densities. Thus, we only
         # have the ground-state density here, regardless of how many roots were computed.
         result.electronic_density = density
-
-        # TODO: we should figure out a way to include the `ci_vec` in the returned result. This
-        # would allow users to do additional computations themselves, if needed.
-        # This is likely pending improvements to the `Result` classes in Qiskit Nature. See for
-        # example: https://github.com/qiskit-community/qiskit-nature/issues/1198
 
         return result
 
@@ -219,3 +226,42 @@ class PySCFGroundStateSolver(GroundStateSolver):
     def solver(self) -> fci.direct_spin1.FCISolver:
         """Returns the solver."""
         return self._solver
+
+    @staticmethod
+    def _compute_spin(
+        densities: tuple[tuple[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray, np.ndarray]],
+        overlap_ab: np.ndarray | None,
+    ):
+        (dm1a, dm1b), (dm2aa, dm2ab, dm2bb) = densities
+
+        identity = np.eye(dm1a.shape[0])
+        if overlap_ab is None:
+            overlap_ab = identity
+
+        overlap_ba = overlap_ab.T
+
+        # NOTE: we know for a fact, that overlap_aa and overlap_bb will always equal the identity
+        # when dealing with a single wavefunction
+        ssz = (
+            np.einsum("ijkl,ij,kl->", dm2aa, identity, identity)
+            - np.einsum("ijkl,ij,kl->", dm2ab, identity, identity)
+            + np.einsum("ijkl,ij,kl->", dm2bb, identity, identity)
+            - np.einsum("ijkl,ij,kl->", dm2ab, identity, identity)
+            + np.einsum("ji,ij->", dm1a, identity)
+            + np.einsum("ji,ij->", dm1b, identity)
+        ) * 0.25
+
+        dm2abba = -dm2ab.transpose(0, 3, 2, 1)  # alpha^+ beta^+ alpha beta
+        dm2baab = -dm2ab.transpose(2, 1, 0, 3)  # beta^+ alpha^+ beta alpha
+        ssxy = (
+            np.einsum("ijkl,ij,kl->", dm2abba, overlap_ab, overlap_ba)
+            + np.einsum("ijkl,ij,kl->", dm2baab, overlap_ba, overlap_ab)
+            # NOTE: the following two lines are different from PySCF because we may deal with
+            # non-unitary overlap_ab matrices
+            + np.einsum("ji,ij->", dm1a, overlap_ab @ overlap_ba)
+            + np.einsum("ji,ij->", dm1b, overlap_ba @ overlap_ab)
+        ) * 0.5
+
+        spin_square = ssxy + ssz
+
+        return spin_square, np.sqrt(ssz)
