@@ -79,9 +79,9 @@ cas.fcisolver = QiskitSolver(algorithm)
 cas.run()
 ```
 
-More detailed documentation can be found at
-[Documentation](https://qiskit-community.github.io/qiskit-nature-pyscf/). For more detailed 
-explanations we recommend to check out the documentation of
+More detailed information for this plugin can be found in its
+[Documentation](https://qiskit-community.github.io/qiskit-nature-pyscf/). For further 
+information and explanations we recommend to check out the documentation of
 [PySCF](https://pyscf.org/) and [Qiskit Nature](https://qiskit-community.github.io/qiskit-nature/).
 
 
