@@ -82,7 +82,7 @@ cas.run()
 More detailed documentation can be found at
 [Documentation](https://qiskit-community.github.io/qiskit-nature-pyscf/). For more detailed 
 explanations we recommend to check out the documentation of
-[PySCF](https://pyscf.org/) and [Qiskit Nature](https://qiskit.org/ecosystem/nature/).
+[PySCF](https://pyscf.org/) and [Qiskit Nature](https://qiskit-community.github.io/qiskit-nature/).
 
 
 ## Citation
