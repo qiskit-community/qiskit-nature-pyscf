@@ -1,6 +1,6 @@
 # This code is part of a Qiskit project.
 #
-# (C) Copyright IBM 2023.
+# (C) Copyright IBM 2023, 2024.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -72,8 +72,8 @@ class PySCFGroundStateSolver(GroundStateSolver):
        result = solver.solve(problem)
        print(result)
 
-    For more details please to the documentation of [PySCF](https://pyscf.org/) and
-    [Qiskit Nature](https://qiskit.org/ecosystem/nature/).
+    For more details please to the documentation of `PySCF <https://pyscf.org/>`_ and
+    `Qiskit Nature <https://qiskit-community.github.io/qiskit-nature/>`_.
     """
 
     def __init__(self, solver: fci.direct_spin1.FCISolver) -> None:
