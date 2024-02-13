@@ -8,7 +8,7 @@ Installation
 ============
 
 Qiskit Nature PySCF depends on the main Qiskit package which has its own
-`Qiskit Getting Started <https://qiskit.org/documentation/getting_started.html>`__ detailing the
+`installation instructions <https://docs.quantum.ibm.com/start/install>`__ detailing the
 installation options for Qiskit and its supported environments/platforms. You should refer to
 that first. Then the information here can be followed which focuses on the additional installation
 specific to Qiskit Nature PySCF.
@@ -31,7 +31,7 @@ specific to Qiskit Nature PySCF.
 
        Since Qiskit Nature PySCF depends on Qiskit, and its latest changes may require new or changed
        features of Qiskit, you should first follow Qiskit's `"Install from source"` instructions
-       here `Qiskit Getting Started <https://qiskit.org/documentation/getting_started.html>`__
+       `here <https://docs.quantum.ibm.com/start/install-qiskit-source>`__
 
        .. raw:: html
 
