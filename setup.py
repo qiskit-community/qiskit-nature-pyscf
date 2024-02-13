@@ -1,6 +1,6 @@
 # This code is part of a Qiskit project.
 #
-# (C) Copyright IBM 2022, 2023.
+# (C) Copyright IBM 2022, 2024.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -42,7 +42,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/qiskit-community/qiskit-nature-pyscf",
     author="Qiskit Nature PySCF Development Team",
-    author_email="hello@qiskit.org",
+    author_email="qiskit@us.ibm.com",
     license="Apache-2.0",
     classifiers=[
         "Environment :: Console",
