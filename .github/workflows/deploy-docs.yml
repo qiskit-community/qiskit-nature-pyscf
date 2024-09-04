@@ -60,7 +60,7 @@ jobs:
           make html
         shell: bash
       - name: Run upload documentation artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: page
           path: docs/_build/html

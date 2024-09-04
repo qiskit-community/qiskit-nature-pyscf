@@ -100,7 +100,7 @@ jobs:
         if: ${{ !cancelled() }}
         shell: bash
       - name: Run upload documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: documentation
           path: docs/_build/html/artifacts/documentation.tar.gz
@@ -178,7 +178,7 @@ jobs:
           mv .coverage ./ci-artifact-data/fin.dat
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == 3.8 }}
         shell: bash
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.python-version }}
           path: ./ci-artifact-data/*
