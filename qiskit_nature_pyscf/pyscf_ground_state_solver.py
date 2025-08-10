@@ -44,7 +44,7 @@ class PySCFGroundStateSolver(GroundStateSolver):
     ``filter_criterion``. For non-singlet spin ground states the setup using Qiskit components is a
     lot more involved, whereas this class provides an easy-to-use alternative.
 
-    Here is an example use cas:
+    Here is an example use case:
 
     .. code-block:: python
 
