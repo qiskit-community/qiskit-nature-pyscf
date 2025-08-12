@@ -176,7 +176,7 @@ intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
     "qiskit_algorithms": ("https://qiskit-community.github.io/qiskit-algorithms", None),
     "qiskit_nature": ("https://qiskit-community.github.io/qiskit-nature", None),
-    "qiskit": ("https://docs.quantum.ibm.com/api/qiskit", None),
+    "qiskit": ("https://quantum.cloud.ibm.com/docs/api/qiskit", None),
 }
 
 html_context = {"analytics_enabled": True}
